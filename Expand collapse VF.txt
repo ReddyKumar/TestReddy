@@ -1,0 +1,91 @@
+<apex:page tabstyle="Account" controller="nestedqueryexample" showheader="true" sidebar="false">
+<script>
+        function switchMenu(obj,obj1,obj2,obj3) 
+        {
+            var el = document.getElementById(obj);                                       
+            if ( el.style.display != 'none' ) {
+            el.style.display = 'none';
+            }
+            else {
+            el.style.display = '';
+            }
+            var e2 = document.getElementById(obj1);                                       
+            if ( e2.style.display != 'none' ) {
+            e2.style.display = 'none';
+            }
+            else {
+            e2.style.display = '';
+            }
+             var e3 = document.getElementById(obj2);                                       
+            if ( e2.style.display != 'none' ) {
+            e3.style.display = 'none';
+            }
+            else {
+            e3.style.display = '';
+            }
+			var e4 = document.getElementById(obj3);                                       
+            if ( e4.style.display != 'none' ) {
+            e4.style.display = 'none';
+            }
+            else {
+            e4.style.display = '';
+            }
+
+        }
+</script>
+    <apex:pageblock >     
+        <apex:pageblocktable value="{!accsandtmember}"  var="accdet">
+            <apex:column >
+                   <apex:facet name="header">                                        
+                         Team Members                                                                               
+                    </apex:facet>
+                    <apex:outputpanel id="plusimage">
+                          <apex:image url="{!$Resource.PlusImage}" onclick="switchMenu('{!$Component.inlinetablesec}','{!$Component.minusimage}','{!$Component.plusimage}','{!$Component.inlinetablesec1}')" title="Expand - Team Member's"/> 
+                    </apex:outputpanel>
+                    <apex:outputpanel id="minusimage" style="display:none;">
+                          <apex:image url="{!$Resource.Minusimage}" onclick="switchMenu('{!$Component.inlinetablesec}','{!$Component.plusimage}','{!$Component.minusimage}','{!$Component.inlinetablesec1}')" title="Collapse - Team Member's"/>
+                    </apex:outputpanel>
+                    <apex:outputpanel id="inlinetablesec" style="display:none;">
+                                                <apex:variable value="{!0}" var="rowNum"/>
+                                                <apex:repeat var="count" value="{!accdet.contacts}">
+                                                    <apex:variable var="rowNum" value="{!rowNum+1}"/>
+                                                </apex:repeat>
+                            <apex:outputText rendered="{!rowNum=0}">  No Contacts  </apex:outputText>
+							<apex:pageblock title="Related Contacts" >
+                        <apex:pageblocktable value="{!accdet.contacts}" var="tm" rendered="{!rowNum>0}">
+                            <apex:column headerValue="First Name">
+                                   <apex:outputfield value="{!tm.firstname}"/>
+                             </apex:column>
+                             <apex:column headerValue="Last Name">
+                                   <apex:outputfield value="{!tm.description}"/>
+                             </apex:column>                          
+                        </apex:pageblocktable>
+						</apex:pageblock>
+                   </apex:outputpanel>   
+                    <apex:outputpanel id="inlinetablesec1" style="display:none;">
+                                                <apex:variable value="{!0}" var="rowNum"/>
+                                                <apex:repeat var="count" value="{!accdet.Opportunities}">
+                                                    <apex:variable var="rowNum" value="{!rowNum+1}"/>
+                                                </apex:repeat>
+                            <apex:outputText rendered="{!rowNum=0}">  No Opps  </apex:outputText>
+							<apex:pageblock title="Related Opportunities" >
+                        <apex:pageblocktable value="{!accdet.Opportunities}" var="tr" rendered="{!rowNum>0}">
+                            <apex:column headerValue="Name">
+                                   <apex:outputfield value="{!tr.Name}"/>
+                             </apex:column>
+                             <apex:column headerValue="Stage Name">
+                                   <apex:outputfield value="{!tr.stagename}"/>
+                             </apex:column>                          
+                        </apex:pageblocktable>
+						</apex:pageblock>
+                   </apex:outputpanel>     				   
+            </apex:column>
+            <apex:column headervalue="Account Name">
+                    <apex:outputtext value="{!accdet.Name}"/>
+            </apex:column>
+            <apex:column headervalue="Billing Country">
+                    <apex:outputtext value="{!accdet.BillingCountry}"/>
+            </apex:column>
+        </apex:pageblocktable>
+    </apex:pageblock>
+</apex:page>
